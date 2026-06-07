@@ -1,0 +1,68 @@
+public class ArbolInventario {
+
+    private Producto raiz;
+
+    public ArbolInventario() {
+        raiz = null;
+    }
+
+    // Método público para insertar
+    public void insertar(int id, String nombre) {
+        raiz = insertarRecursivo(raiz, id, nombre);
+    }
+
+    // Inserción recursiva
+    private Producto insertarRecursivo(Producto actual, int id, String nombre) {
+
+        if (actual == null) {
+            return new Producto(id, nombre);
+        }
+
+        if (id < actual.id) {
+            actual.izquierdo = insertarRecursivo(actual.izquierdo, id, nombre);
+        } else if (id > actual.id) {
+            actual.derecho = insertarRecursivo(actual.derecho, id, nombre);
+        }
+
+        return actual;
+    }
+
+    // Recorrido Inorden
+    public void mostrarInventario() {
+        inorden(raiz);
+    }
+
+    private void inorden(Producto nodo) {
+
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+
+            System.out.println("ID: " + nodo.id +
+                               " | Nombre: " + nodo.nombre);
+
+            inorden(nodo.derecho);
+        }
+    }
+
+    // Buscar producto
+    public boolean buscar(int id) {
+        return buscarRecursivo(raiz, id);
+    }
+
+    private boolean buscarRecursivo(Producto nodo, int id) {
+
+        if (nodo == null) {
+            return false;
+        }
+
+        if (nodo.id == id) {
+            return true;
+        }
+
+        if (id < nodo.id) {
+            return buscarRecursivo(nodo.izquierdo, id);
+        } else {
+            return buscarRecursivo(nodo.derecho, id);
+        }
+    }
+}
